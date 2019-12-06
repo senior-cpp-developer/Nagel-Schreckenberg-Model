@@ -1,6 +1,6 @@
 from mesa import Model, Agent
 from mesa.space import MultiGrid
-from mesa.time import RandomActivation, StagedActivation,SimultaneousActivation
+from mesa.time import SimultaneousActivation
 from mesa.datacollection import DataCollector
 import random
 

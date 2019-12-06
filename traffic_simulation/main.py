@@ -1,3 +1,5 @@
+#This file doesn't need to be run only run main_single.py
+
 from mesa.batchrunner import BatchRunner
 from traffic_simulation.model import MoneyModel, compute_gini
 import matplotlib.pyplot as plt
