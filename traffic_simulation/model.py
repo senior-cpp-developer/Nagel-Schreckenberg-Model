@@ -64,10 +64,10 @@ class CarAgent(Agent):
 
     def step(self):
         self.perceive()
-        self.act()
-        self.move()
 
     def advance(self):
+        self.act()
+        self.move()
         print(self.unique_id, "::", self.state)
 
 class CarModel(Model):

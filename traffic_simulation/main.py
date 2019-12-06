@@ -1,28 +1,29 @@
-#This file doesn't need to be run only run main_single.py
-
-from mesa.batchrunner import BatchRunner
-from traffic_simulation.model import MoneyModel, compute_gini
+from model import CarModel
 import matplotlib.pyplot as plt
 
-fixed_params = {
-    "width": 10,
-    "height": 10
-}
+# Config
+n = 10 # Amount of model steps
+width = 1000
+height = 1
+acceleration = 1
+deceleration = 1
+vision_range = 100
+speed_limit = 5
+randomization = 0.1
 
-variable_params = {"N": range(10, 100, 10)}
-# The variables parameters will be invoked along with the fixed parameters allowing for either or both to be honored.
-batch_run = BatchRunner(
-    MoneyModel,
-    variable_params,
-    fixed_params,
-    iterations=1,
-    max_steps=30,
-    model_reporters={"Gini": compute_gini}
-)
+all_speeds = []
+model = CarModel(n, width, height, acceleration, deceleration, vision_range, randomization, speed_limit)
+for i in range(25):
+    model.step()
 
-batch_run.run_all()
+    # Store the results
+    total = 0
+    for agent in model.schedule.agents:
+        total += agent.speed
+    all_speeds.append(total/model.num_agents)
 
-run_data = batch_run.get_model_vars_dataframe()
-# run_data.head()
-plt.scatter(run_data.N, run_data.Gini)
+print('all_speeds:', all_speeds)
+plt.xlabel("Steps")
+plt.ylabel("Average speed")
+plt.plot(all_speeds)
 plt.show()
