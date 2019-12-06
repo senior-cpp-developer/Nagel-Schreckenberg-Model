@@ -75,12 +75,12 @@ class CarModel(Model):
         self.grid = MultiGrid(width, height, True)
         
         # TODO: Implement staged activation here
-        # self.schedule = StagedActivation(self, self.)
-        self.schedule = RandomActivation(self)
+        self.schedule = StagedActivation(self)
+        # self.schedule = RandomActivation(self)
         self.running = True
 
         # Create agents
-        for i in range(self.num_agents):
+        for i in range(n):
             a = CarAgent(i, self, acceleration, deceleration, vision_range, randomization, speed_limit)
             self.schedule.add(a)
             # Add the agent to a random grid cell

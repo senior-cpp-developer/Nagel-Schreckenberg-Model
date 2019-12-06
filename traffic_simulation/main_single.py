@@ -2,7 +2,7 @@ from traffic_simulation.model import CarModel
 import matplotlib.pyplot as plt
 
 # Config
-n = 5
+n = 10 # Amount of model steps
 width = 1000
 height = 1
 acceleration = 1
@@ -17,10 +17,12 @@ for i in range(10):
     model.step()
 
     # Store the results
+    total = 0
     for agent in model.schedule.agents:
-        all_speeds.append(agent.speed)
+        total += agent.speed
+    all_speeds.append(total/model.num_agents)
 
-print('all_speeds:',all_speeds)
+print('all_speeds:', all_speeds)
 plt.xlabel("Steps")
 plt.ylabel("Average speed")
 plt.plot(all_speeds)
