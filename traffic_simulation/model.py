@@ -1,14 +1,14 @@
 from mesa import Model, Agent
 from mesa.space import MultiGrid
-from mesa.time import RandomActivation, StagedActivation
+from mesa.time import RandomActivation, StagedActivation,SimultaneousActivation
 from mesa.datacollection import DataCollector
 import random
 
-def compute_traffic_flow(model):
-    agent_speeds = [agent.speed for agent in model.schedule.agents]
-    x = sorted(agent_speeds)
-    n = model.num_agents
-    return sum(x)/n
+# def compute_traffic_flow(model):
+#     agent_speeds = [agent.speed for agent in model.schedule.agents]
+#     x = sorted(agent_speeds)
+#     n = model.num_agents
+#     return sum(x)/n
 
 class CarAgent(Agent):
     """ An agent with fixed initial wealth."""
@@ -66,7 +66,9 @@ class CarAgent(Agent):
         self.perceive()
         self.act()
         self.move()
-        print(self.unique_id, ":", self.state)
+
+    def advance(self):
+        print(self.unique_id, "::", self.state)
 
 class CarModel(Model):
     """A model with some number of agents."""
@@ -74,9 +76,7 @@ class CarModel(Model):
         self.num_agents = n
         self.grid = MultiGrid(width, height, True)
         
-        # TODO: Implement staged activation here
-        self.schedule = StagedActivation(self)
-        # self.schedule = RandomActivation(self)
+        self.schedule = SimultaneousActivation(self)
         self.running = True
 
         # Create agents
@@ -86,10 +86,10 @@ class CarModel(Model):
             # Add the agent to a random grid cell
             self.grid.place_agent(a, (i,0))
 
-        self.datacollector = DataCollector(
-            model_reporters={"Traffic Flow": compute_traffic_flow(self)},
-            agent_reporters={"Speed": "speed"}
-        )
+        # self.datacollector = DataCollector(
+        #     model_reporters={"Traffic Flow": compute_traffic_flow(self)},
+        #     agent_reporters={"Speed": "speed"}
+        # )
 
     def step(self):
         # self.datacollector.collect(self)

@@ -8,7 +8,7 @@ fixed_params = {
 }
 
 variable_params = {"N": range(10, 100, 10)}
-# The variables parameters will be invoke along with the fixed parameters allowing for either or both to be honored.
+# The variables parameters will be invoked along with the fixed parameters allowing for either or both to be honored.
 batch_run = BatchRunner(
     MoneyModel,
     variable_params,

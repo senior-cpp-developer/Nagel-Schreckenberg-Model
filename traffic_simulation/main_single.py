@@ -1,4 +1,4 @@
-from traffic_simulation.model import CarModel
+from model import CarModel
 import matplotlib.pyplot as plt
 
 # Config
@@ -13,7 +13,7 @@ randomization = 0.1
 
 all_speeds = []
 model = CarModel(n, width, height, acceleration, deceleration, vision_range, randomization, speed_limit)
-for i in range(10):
+for i in range(25):
     model.step()
 
     # Store the results
