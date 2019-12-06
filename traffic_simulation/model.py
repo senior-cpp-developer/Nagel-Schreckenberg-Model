@@ -33,7 +33,7 @@ class CarAgent(Agent):
                 break
         if distance_to_precursor<self.speed and self.speed>0:
             self.state = "Braking"
-        elif distance_to_precursor==self.speed and self.speed<self.speed_limit:
+        elif distance_to_precursor==self.speed and self.speed<self.speed_limit or self.speed == self.speed_limit:
             self.state = "Cruising"
         else:
             self.state = "Accelerating"
