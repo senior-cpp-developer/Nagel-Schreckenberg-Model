@@ -26,14 +26,15 @@ class CarAgent(Agent):
 		self.state = "Cruising"
 
 	def perceive(self):
-		distance_to_precursor = self.vision_range
+		distance_to_precursor = 0
 		for t in range(self.pos[0]+1, self.vision_range):
 			tile = (t, 0)
 			if self.model.grid.is_cell_empty(tile):
 				distance_to_precursor += 1
 			else:
 				break
-
+		if distance_to_precursor == 0:
+			distance_to_precursor = self.vision_range
 		self.distance_to_precursor = distance_to_precursor
 
 		ran = random.randrange(0, 100)
@@ -48,9 +49,9 @@ class CarAgent(Agent):
 
 	def act(self):
 		if self.state == "Braking":
-			self.speed = self.distance_to_precursor-1
+			self.speed = self.distance_to_precursor-self.acceleration
 		if self.state == "RandomBraking":
-			self.speed -= 1
+			self.speed -= self.acceleration
 		if self.state == "Accelerating":
 			self.speed += self.acceleration
 
