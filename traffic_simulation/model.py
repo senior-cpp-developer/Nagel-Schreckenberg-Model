@@ -82,15 +82,15 @@ class CarAgent(Agent):
 class CarModel(Model):
 	"""A model with some number of agents."""
 
-	def __init__(self, n, width, height, acceleration, vision_range, randomization, speed_limit):
-		self.num_agents = n
+	def __init__(self, car_count, width, height, acceleration, vision_range, randomization, speed_limit):
+		self.num_agents = car_count
 		self.grid = MultiGrid(width, height, True)
 
 		self.schedule = SimultaneousActivation(self)
 		self.running = True
 
 		# Create agents
-		for i in range(n):
+		for i in range(car_count):
 			a = CarAgent(i, self, acceleration, vision_range, randomization, speed_limit)
 			self.schedule.add(a)
 			# Add the agent to a random grid cell
