@@ -26,6 +26,7 @@ class CarAgent(Agent):
 		self.state = "Cruising"
 
 	def perceive(self):
+		""" Checks if next tile is empty and set a new state to the current agent."""
 		distance_to_precursor = 0
 		for t in range(self.pos[0]+1, self.vision_range):
 			tile = (t, 0)
@@ -48,6 +49,7 @@ class CarAgent(Agent):
 			self.state = "Accelerating"
 
 	def act(self):
+		""" Looks at current state and adjust the speed according to the state of the agent."""
 		if self.state == "Braking":
 			self.speed = self.distance_to_precursor
 		if self.state == "RandomBraking":
@@ -65,11 +67,13 @@ class CarAgent(Agent):
 		pass
 
 	def move(self):
+		""" Sets a agents 1 grid on."""
 		pos = list(self.pos)
 		pos[0] += self.speed
 		self.model.grid.move_agent(self, pos)
 
 	def step(self):
+		""" Ask the current agents to set next move."""
 		self.perceive()
 
 	def advance(self):
@@ -100,5 +104,6 @@ class CarModel(Model):
 			# self.grid.place_agent(a, (i*speed_limit, 0))
 
 	def step(self):
+		""" All cars anticipate for next step."""
 		# self.datacollector.collect(self)
 		self.schedule.step()
