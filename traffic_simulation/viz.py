@@ -13,10 +13,19 @@ def agent_portrayal(agent):
     return portrayal
 
 #Creates grid to be displayed
-grid = CanvasGrid(agent_portrayal, 200, 1, 800, 100)
+grid = CanvasGrid(agent_portrayal, 125, 1, 800, 100)
 
-model_par_dict =  {"n":10, "width":1000, "height":10,"acceleration":1, "deceleration":1, "vision_range":100,
-                   "speed_limit":5, "randomization":0.1}
+n = 1000  # Amount of model steps
+car_count = 20  # Amount of cars in model
+height = 1
+acceleration = 1
+speed_limit = 5
+randomization = 0.25
+vision_range = speed_limit*2
+width = n*car_count+vision_range+1
+
+model_par_dict =  {"car_count":car_count, "width":width, "height":height, "acceleration":acceleration,
+                  "vision_range":vision_range ,"speed_limit":speed_limit, "randomization":randomization}
 
 server = ModularServer(CarModel, [grid], "Car Model", model_par_dict)
 server.port = 8521 # The default
