@@ -7,7 +7,7 @@ def agent_portrayal(agent):
     """Holds the parameters for how the agents are displayed"""
     
     def calculate_color():
-        """Calculates the color for a agent based on the delay they are experiencing"""
+        """Calculates the color for a agent based on the amount they reduced there speed from maximum"""
 
         factor_maximum_speed = agent.speed/agent.speed_limit
         
