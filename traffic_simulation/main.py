@@ -2,15 +2,15 @@ from model import CarModel
 import matplotlib.pyplot as plt
 
 # Config
-n = 1000  # Amount of model steps
-car_count = 20  # Amount of cars in model
+n = 100  # Amount of model steps
+car_count = 10  # Amount of cars in model
+width = 3000 # Road size
 height = 1
-acceleration = 1
-speed_limit = 5
-randomization = 0.25
+acceleration = 10
+speed_limit = 130
+randomization = 0.1
 
-vision_range = speed_limit*2
-width = n*car_count+vision_range+1
+vision_range = 100
 
 all_speeds = []
 all_tracked_agent_speeds = []

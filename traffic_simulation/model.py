@@ -38,9 +38,9 @@ class CarAgent(Agent):
 		self.distance_to_precursor = distance_to_precursor
 
 		ran = random.randrange(0, 100)
-		if self.speed > 0 and ran / 100 < self.randomization:
+		if self.speed > 1 and ran / 100 < self.randomization:
 			self.state = "RandomBraking"
-		elif distance_to_precursor < self.speed and self.speed > 0:
+		elif distance_to_precursor < self.speed and self.speed > 1:
 			self.state = "Braking"
 		elif distance_to_precursor == self.speed and self.speed > 0 or self.speed == self.speed_limit:
 			self.state = "Cruising"
@@ -55,8 +55,8 @@ class CarAgent(Agent):
 		if self.state == "Accelerating":
 			self.speed += self.acceleration
 
-		if self.speed < 0:
-			self.speed = 0
+		if self.speed < 1:
+			self.speed = 1
 		if self.speed > self.speed_limit:
 			self.speed = self.speed_limit
 
@@ -85,6 +85,7 @@ class CarModel(Model):
 	def __init__(self, car_count, width, height, acceleration, vision_range, randomization, speed_limit):
 		self.num_agents = car_count
 		self.grid = MultiGrid(width, height, True)
+		self.grid.torus_adj((0,0))
 
 		self.schedule = SimultaneousActivation(self)
 		self.running = True
@@ -94,7 +95,8 @@ class CarModel(Model):
 			a = CarAgent(i, self, acceleration, vision_range, randomization, speed_limit)
 			self.schedule.add(a)
 			# Add the agent to a random grid cell
-			self.grid.place_agent(a, (i, 0))
+			ran = random.randrange(0,width)
+			self.grid.place_agent(a, (ran, 0))
 
 		# self.datacollector = DataCollector(
 		#     model_reporters={"Traffic Flow": compute_traffic_flow(self)},
