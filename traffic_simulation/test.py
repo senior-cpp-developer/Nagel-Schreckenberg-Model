@@ -3,28 +3,26 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Config
-n = 100  # Amount of model steps
-car_count = 20  # Amount of cars in model
+n = 2000  # Amount of model steps
 width = 100  # Road size
-height = 1
 acceleration = 1
 speed_limit = 5
 randomization = 0.005
 vision_range = speed_limit * 3
 
-# traffic_occupations = [5, 10, 15, 20, 50]
-traffic_occupations = [5]
-results = [[],[],[],[],[]]
+traffic_occupations = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 50]  # Car counts
+speed_limits = [5, 8, 10, 13]
+
+results = []
 for num, cars in enumerate(traffic_occupations, start=0):
-	results[num] = []
-	# [car_count, width, height, acceleration, vision_range, randomization, speed_limit]
-	config_5 = [cars, 150, height, acceleration, 30, randomization, 5]
-	config_10 = [cars, 150, height, acceleration, 30, randomization, 10]
-	config_13 = [cars, 150, height, acceleration, 30, randomization, 13]
+	print("Running: "+str(cars)+" cars..")
+	results.append([])
+	settings = []
+	for x in speed_limits:
+		settings.append([cars, 150, 1, acceleration, 30, randomization, x])
 
-	settings = [config_5, config_10, config_13]
-
-	for setting in settings:
+	for num_setting, setting in enumerate(settings, start=0):
+		results[num].append([])
 		all_speeds = []
 		model = CarModel(*setting)
 		for i in range(n):
@@ -35,18 +33,20 @@ for num, cars in enumerate(traffic_occupations, start=0):
 			for agent in model.schedule.agents:
 				total += agent.speed
 			ave_speed = total/model.num_agents
-			all_speeds.append(ave_speed-setting[6])
-		results[num].append(all_speeds)
+			all_speeds.append(ave_speed)
+		results[num][num_setting] = np.mean(all_speeds)
 		# plt.plot(all_speeds, label="Snelheidslimiet: "+str(setting[6]))
 
-r = np.asarray(results)
+plt.plot(traffic_occupations, results)
+plt.xticks(traffic_occupations)
 
-for num in range(0, len(traffic_occupations)):
-	plt.plot(r.mean(0, num))
-
-plt.xlabel("Steps")
-plt.ylabel("Gemiddelde vertraging")
-plt.xlim(0, len(traffic_occupations))
-plt.legend()
+plt.title("Effect van wegbezetting en snelheidslimiet op verkeersflow")
+plt.xlabel("Weg bezetting (%)")
+plt.ylabel("Gemiddelde snelheid")
+# plt.xlim(0, len(traffic_occupations))
+labels = []
+for x in settings:
+	labels.append("Snelheidslimiet: "+str(x[6]))
+plt.legend(labels)
 plt.grid()
 plt.show()
