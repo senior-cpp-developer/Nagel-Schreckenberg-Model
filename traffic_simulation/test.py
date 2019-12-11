@@ -33,7 +33,7 @@ for num, cars in enumerate(traffic_occupations, start=0):
 			for agent in model.schedule.agents:
 				total += agent.speed
 			ave_speed = total/model.num_agents
-			all_speeds.append(ave_speed)
+			all_speeds.append(ave_speed-setting[6])
 		results[num][num_setting] = np.mean(all_speeds)
 		# plt.plot(all_speeds, label="Snelheidslimiet: "+str(setting[6]))
 
@@ -42,7 +42,7 @@ plt.xticks(traffic_occupations)
 
 plt.title("Effect van wegbezetting en snelheidslimiet op verkeersflow")
 plt.xlabel("Weg bezetting (%)")
-plt.ylabel("Gemiddelde snelheid")
+plt.ylabel("Gemiddelde vertraging")
 # plt.xlim(0, len(traffic_occupations))
 labels = []
 for x in settings:
