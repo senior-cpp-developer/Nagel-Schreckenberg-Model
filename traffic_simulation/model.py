@@ -4,18 +4,12 @@ from mesa.time import SimultaneousActivation
 from mesa.datacollection import DataCollector
 import random
 
-
-# def compute_traffic_flow(model):
-#     agent_speeds = [agent.speed for agent in model.schedule.agents]
-#     x = sorted(agent_speeds)
-#     n = model.num_agents
-#     return sum(x)/n
-
 class CarAgent(Agent):
 	""" An agent with fixed initial wealth."""
 
 	def __init__(self, unique_id, model, acceleration, vision_range, randomization, speed_limit):
 		super().__init__(unique_id, model)
+		self.datacollector = DataCollector
 		self.acceleration = acceleration
 		self.vision_range = vision_range
 		self.speed = speed_limit
@@ -54,7 +48,6 @@ class CarAgent(Agent):
 			self.speed = self.distance_to_precursor
 		if self.state == "RandomBraking":
 			self.speed -= self.acceleration
-			# self.speed -= 1
 		if self.state == "Accelerating":
 			self.speed += self.acceleration
 
@@ -80,9 +73,6 @@ class CarAgent(Agent):
 		self.act()
 		self.move()
 		self.iteration += 1
-		# if self.unique_id == 5:
-			# print("Step:", self.iteration,"Pos:",self.pos, "::", "Speed:", str(self.speed) + "/" + str(self.speed_limit),"-->", "Distance:", self.distance_to_precursor ,self.state)
-
 
 class CarModel(Model):
 	"""A model with some number of agents."""
@@ -101,9 +91,7 @@ class CarModel(Model):
 			# Add the agent to a random grid cell
 			ran = random.randrange(0, width)
 			self.grid.place_agent(a, (ran, 0))
-			# self.grid.place_agent(a, (i*speed_limit, 0))
 
 	def step(self):
 		""" All cars anticipate for next step."""
-		# self.datacollector.collect(self)
 		self.schedule.step()
