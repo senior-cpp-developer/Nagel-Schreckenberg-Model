@@ -4,12 +4,10 @@ import numpy as np
 import scipy.stats as stats
 
 # Config
-n = 2000  # Amount of model steps
-width = 100  # Road size
+n = 1000  # Amount of model steps
+width = 500  # Road size
 acceleration = 1
-speed_limit = 5
 randomization = 0.005
-vision_range = speed_limit * 3
 
 traffic_occupations = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 50]  # Car counts
 speed_limits = [5, 8, 10, 13]
@@ -20,7 +18,7 @@ for num, cars in enumerate(traffic_occupations, start=0):
 	results.append([])
 	settings = []
 	for x in speed_limits:
-		settings.append([cars, 150, 1, acceleration, 30, randomization, x])
+		settings.append([cars, 150, 1, acceleration, max(speed_limits)*3, randomization, x])
 
 	for num_setting, setting in enumerate(settings, start=0):
 		results[num].append([])
@@ -35,6 +33,7 @@ for num, cars in enumerate(traffic_occupations, start=0):
 				total += agent.speed
 			ave_speed = total/model.num_agents
 			all_speeds.append(abs(setting[6]-ave_speed))
+			# all_speeds.append(ave_speed)
 		print(num_setting, "-->", setting, "::::", "||STD:", round(np.std(all_speeds), 2), "||AVE:", round(np.mean(all_speeds), 2), "||MOD:", stats.mode(all_speeds)[0])
 		results[num][num_setting] = np.mean(all_speeds)
 		# plt.plot(all_speeds, label="Snelheidslimiet: "+str(setting[6]))
