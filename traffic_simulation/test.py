@@ -4,8 +4,7 @@ import numpy as np
 import scipy.stats as stats
 
 # Config
-n = 1000  # Amount of model steps
-width = 500  # Road size
+n = 10000  # Amount of model steps
 acceleration = 1
 randomization = 0.005
 
@@ -18,7 +17,7 @@ for num, cars in enumerate(traffic_occupations, start=0):
 	results.append([])
 	settings = []
 	for x in speed_limits:
-		settings.append([cars, 150, 1, acceleration, max(speed_limits)*3, randomization, x])
+		settings.append([cars, 100, 1, acceleration, 50, randomization, x])
 
 	for num_setting, setting in enumerate(settings, start=0):
 		results[num].append([])
