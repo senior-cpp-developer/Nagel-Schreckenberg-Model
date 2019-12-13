@@ -5,7 +5,6 @@ import scipy.stats as stats
 
 # Config
 n = 1000  # Amount of model steps
-width = 500  # Road size
 acceleration = 1
 randomization = 0.005
 
@@ -15,12 +14,14 @@ speed_limits = [5, 8, 10, 13]
 results_speed = []
 results_delay = []
 for num, cars in enumerate(traffic_occupations, start=0):
+
     print("Running: " + str(cars) + " cars..")
     results_speed.append([])
     results_delay.append([])
     settings = []
     for x in speed_limits:
-        settings.append([cars, 100, 1, acceleration, max(speed_limits) * 3, randomization, x])
+        settings.append([cars, 100, 1, acceleration, 50, randomization, x])
+
 
     for num_setting, setting in enumerate(settings, start=0):
         results_speed[num].append([])
