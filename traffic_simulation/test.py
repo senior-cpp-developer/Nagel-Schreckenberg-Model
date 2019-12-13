@@ -1,7 +1,7 @@
 from model import CarModel
-from resultsAVG import calculateAvg
 import matplotlib.pyplot as plt
 import numpy as np
+import scipy.stats as stats
 
 # Config
 n = 2000  # Amount of model steps
@@ -34,7 +34,8 @@ for num, cars in enumerate(traffic_occupations, start=0):
 			for agent in model.schedule.agents:
 				total += agent.speed
 			ave_speed = total/model.num_agents
-			all_speeds.append(ave_speed+setting[6])
+			all_speeds.append(abs(setting[6]-ave_speed))
+		print(num_setting, "-->", setting, "::::", "||STD:", round(np.std(all_speeds), 2), "||AVE:", round(np.mean(all_speeds), 2), "||MOD:", stats.mode(all_speeds)[0])
 		results[num][num_setting] = np.mean(all_speeds)
 		# plt.plot(all_speeds, label="Snelheidslimiet: "+str(setting[6]))
 
@@ -51,5 +52,3 @@ for x in settings:
 plt.legend(labels)
 plt.grid()
 plt.show()
-
-calculateAvg(results)
