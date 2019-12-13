@@ -22,7 +22,6 @@ for num, cars in enumerate(traffic_occupations, start=0):
     for x in speed_limits:
         settings.append([cars, 100, 1, acceleration, 50, randomization, x])
 
-
     for num_setting, setting in enumerate(settings, start=0):
         results_speed[num].append([])
         results_delay[num].append([])
@@ -41,21 +40,23 @@ for num, cars in enumerate(traffic_occupations, start=0):
             all_speeds.append(ave_speed)
         results_speed[num][num_setting] = np.mean(all_speeds)
         results_delay[num][num_setting] = np.mean(all_delay)
-		# plt.plot(all_speeds, label="Snelheidslimiet: "+str(setting[6]))
+    # plt.plot(all_speeds, label="Snelheidslimiet: "+str(setting[6]))
+
 
 def plot_line(x_data, y_data, y_label):
-	plt.plot(x_data, y_data)
-	plt.xticks(x_data)
-	plt.title("Effect van wegbezetting en snelheidslimiet op verkeersflow")
-	plt.xlabel("Weg bezetting (%)")
-	plt.ylabel(y_label)
-	# plt.xlim(0, len(traffic_occupations))
-	labels = []
-	for x in settings:
-		labels.append("Snelheidslimiet: " + str(x[6]))
-	plt.legend(labels)
-	plt.grid()
-	plt.show()
+    plt.plot(x_data, y_data)
+    plt.xticks(x_data)
+    plt.title("Effect van wegbezetting en snelheidslimiet op verkeersflow")
+    plt.xlabel("Weg bezetting (%)")
+    plt.ylabel(y_label)
+    # plt.xlim(0, len(traffic_occupations))
+    labels = []
+    for x in settings:
+        labels.append("Snelheidslimiet: " + str(x[6]))
+    plt.legend(labels)
+    plt.grid()
+    plt.show()
+
 
 plot_line(traffic_occupations, results_delay, "Gemiddelde vertraging")
 plot_line(traffic_occupations, results_speed, "Gemiddelde snelheid")
