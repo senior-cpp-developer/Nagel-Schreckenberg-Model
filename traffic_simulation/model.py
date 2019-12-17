@@ -1,12 +1,10 @@
 from mesa import Model, Agent
-from mesa.space import SingleGrid, MultiGrid
+from mesa.space import MultiGrid
 from mesa.time import SimultaneousActivation
 from mesa.datacollection import DataCollector
 import random
 
 class CarAgent(Agent):
-	""" An agent with fixed initial wealth."""
-
 	def __init__(self, unique_id, model, acceleration, vision_range, randomization, speed_limit):
 		super().__init__(unique_id, model)
 		self.datacollector = DataCollector
@@ -20,24 +18,25 @@ class CarAgent(Agent):
 		self.state = "Cruising"
 
 	def perceive(self):
-		""" Checks if next tile is empty and set a new state to the current agent."""
-		distance_to_precursor = 0
+		""" Checks how far the  """
+		self.distance_to_precursor = 0
 		for t in range(self.pos[0]+1, self.vision_range):
 			tile = (t, 0)
 			if self.model.grid.is_cell_empty(tile):
-				distance_to_precursor += 1
+				self.distance_to_precursor += 1
 			else:
 				break
-		if distance_to_precursor == 0:
-			distance_to_precursor = self.vision_range
-		self.distance_to_precursor = distance_to_precursor
+		if self.distance_to_precursor == 0:
+			self.distance_to_precursor = self.vision_range
 
+	def update(self):
+		""" Updates the current state """
 		ran = random.randrange(0, 100)
 		if self.speed > 1 and ran / 100 < self.randomization:
 			self.state = "RandomBraking"
-		elif distance_to_precursor < self.speed and self.speed > 1:
+		elif self.distance_to_precursor < self.speed and self.speed > 1:
 			self.state = "Braking"
-		elif distance_to_precursor == self.speed and self.speed > 0 or self.speed == self.speed_limit:
+		elif self.distance_to_precursor == self.speed and self.speed > 0 or self.speed == self.speed_limit:
 			self.state = "Cruising"
 		else:
 			self.state = "Accelerating"
@@ -56,18 +55,16 @@ class CarAgent(Agent):
 		if self.speed > self.speed_limit:
 			self.speed = self.speed_limit
 
-	def update(self):
-		pass
-
 	def move(self):
-		""" Sets a agents 1 grid on."""
+		""" Moves car x tiles forward where x is speed"""
 		pos = list(self.pos)
 		pos[0] += self.speed
 		self.model.grid.move_agent(self, pos)
 
 	def step(self):
-		""" Ask the current agents to set next move."""
+		"""  """
 		self.perceive()
+		self.update()
 
 	def advance(self):
 		self.act()
@@ -77,9 +74,9 @@ class CarAgent(Agent):
 class CarModel(Model):
 	"""A model with some number of agents."""
 
-	def __init__(self, car_count, width, height, acceleration, vision_range, randomization, speed_limit):
+	def __init__(self, car_count, width, acceleration, vision_range, randomization, speed_limit):
 		self.num_agents = car_count
-		self.grid = MultiGrid(width, height, torus=True)
+		self.grid = MultiGrid(width, 1, torus=True)
 
 		self.schedule = SimultaneousActivation(self)
 		self.running = True
