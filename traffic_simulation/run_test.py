@@ -1,6 +1,7 @@
 from model import CarModel
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 import scipy.stats as stats
 
 # Config
@@ -20,7 +21,7 @@ for num, cars in enumerate(traffic_occupations, start=0):
     results_delay.append([])
     settings = []
     for x in speed_limits:
-        settings.append([cars, 100, 1, acceleration, 50, randomization, x])
+        settings.append([cars, 100, acceleration, 50, randomization, x])
 
     for num_setting, setting in enumerate(settings, start=0):
         results_speed[num].append([])
@@ -36,15 +37,21 @@ for num, cars in enumerate(traffic_occupations, start=0):
             for agent in model.schedule.agents:
                 total += agent.speed
             ave_speed = total / model.num_agents
-            all_delay.append(abs(setting[6] - ave_speed))
+            all_delay.append(abs(setting[5] - ave_speed))
             all_speeds.append(ave_speed)
         results_speed[num][num_setting] = np.mean(all_speeds)
         results_delay[num][num_setting] = np.mean(all_delay)
-    # plt.plot(all_speeds, label="Snelheidslimiet: "+str(setting[6]))
 
 
 def plot_line(x_data, y_data, y_label):
-    plt.plot(x_data, y_data)
+    y_data_t = np.transpose(y_data)
+    ci = []
+    for data in y_data:
+        ci.append(np.mean(data)*1.96/math.sqrt(len(data)))
+
+    for data in y_data_t:
+        # print(ci)
+        plt.errorbar(x_data, data, yerr=ci, fmt="-o")
     plt.xticks(x_data)
     plt.title("Effect van wegbezetting en snelheidslimiet op verkeersflow")
     plt.xlabel("Weg bezetting (%)")
@@ -52,7 +59,7 @@ def plot_line(x_data, y_data, y_label):
     # plt.xlim(0, len(traffic_occupations))
     labels = []
     for x in settings:
-        labels.append("Snelheidslimiet: " + str(x[6]))
+        labels.append("Snelheidslimiet: " + str(x[5]))
     plt.legend(labels)
     plt.grid()
     plt.show()
