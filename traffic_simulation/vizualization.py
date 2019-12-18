@@ -36,8 +36,7 @@ def create_vizualization_model():
 
     # Values for vizualisation
     model_par_dict = {"car_count": UserSettableParameter("number", "Car count", 25),
-                    "width": 150, "height": 1,
-                    "acceleration": UserSettableParameter("number", "acceleration", 1),
+                    "width": 150,"acceleration": UserSettableParameter("number", "acceleration", 1),
                     "vision_range": UserSettableParameter("number", "vision_range", 100),
                     "speed_limit": UserSettableParameter("number", "max speed", 10),
                     "randomization": UserSettableParameter("number", "randomization", 0.05)}
