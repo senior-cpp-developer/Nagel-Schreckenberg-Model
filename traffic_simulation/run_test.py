@@ -45,13 +45,10 @@ for num, cars in enumerate(traffic_occupations, start=0):
 
 def plot_line(x_data, y_data, y_label):
     y_data_t = np.transpose(y_data)
-    ci = []
-    for data in y_data:
-        ci.append(np.mean(data)*1.96/math.sqrt(len(data)))
 
     for data in y_data_t:
-        # print(ci)
-        plt.errorbar(x_data, data, yerr=ci, fmt="-o")
+        plt.errorbar(x_data, data, yerr=data*1.65/math.sqrt(len(data)), fmt="-o")
+
     plt.xticks(x_data)
     plt.title("Effect van wegbezetting en snelheidslimiet op verkeersflow")
     plt.xlabel("Weg bezetting (%)")
