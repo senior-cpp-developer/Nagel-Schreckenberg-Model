@@ -1,13 +1,11 @@
 from mesa import Model, Agent
 from mesa.space import MultiGrid
 from mesa.time import SimultaneousActivation
-from mesa.datacollection import DataCollector
 import random
 
 class CarAgent(Agent):
 	def __init__(self, unique_id, model, acceleration, vision_range, randomization, speed_limit):
 		super().__init__(unique_id, model)
-		self.datacollector = DataCollector
 		self.acceleration = acceleration
 		self.vision_range = vision_range
 		self.speed = speed_limit
