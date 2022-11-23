@@ -57,7 +57,7 @@ class CarAgent(Agent):
 		""" Moves car x tiles forward where x is speed"""
 		pos = list(self.pos)
 		pos[0] += self.speed
-		self.model.grid.move_agent(self, pos)
+		self.model.grid.move_agent(self, tuple(pos))
 
 	def step(self):
 		"""  """
